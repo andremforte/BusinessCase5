@@ -9,3 +9,5 @@ scipy
 xgboost
 sklearn
 datetime
+holoviews
+hvplot
