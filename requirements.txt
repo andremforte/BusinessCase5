@@ -4,8 +4,6 @@ requests
 pandas
 numpy
 streamlit
-urllib
-PIL
 scipy
 xgboost
 sklearn
