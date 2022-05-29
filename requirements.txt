@@ -11,3 +11,4 @@ sklearn
 datetime
 holoviews
 hvplot
+streamlit_option_menu
