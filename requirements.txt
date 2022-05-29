@@ -2,7 +2,7 @@ yfinance
 plotly
 requests
 pandas
-yahoo_fin = 0.8.9.1
+yahoo_fin == 0.8.9.1
 numpy
 streamlit
 scipy
