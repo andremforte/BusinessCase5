@@ -1,5 +1,5 @@
 
-# BC5: Cryptocurrency Data Visualization
+# Invest4Some Financial Dashboard
 
 **Problem type:** Dashboarding
 
