@@ -1,0 +1,16 @@
+
+gunicorn
+openpyxl
+yfinance
+plotly
+requests
+pandas
+numpy
+streamlit
+yahoo_fin
+urllib
+PIL
+scipy
+xgboost
+sklearn
+datetime
