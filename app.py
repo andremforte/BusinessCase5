@@ -566,7 +566,7 @@ if options == 'Cryptocurrencies':
 
 	    #Final table with last X days and predictions for the next day
 
-	a = df_crypto['Close'].tail(window+1)
+	a = df_crypto['Close'].tail(window)
 	a = pd.DataFrame(a)
 	a.reset_index(inplace = True)
 
