@@ -16,7 +16,7 @@ where you have general information about the three main sections in this applica
 As you can see in the top left, you have an arrow that opens a side bar. After open it,
 you have the options to select the different chapters you want to analyse. 
 
-[FIGURE - Menu page + Side bar]
+<img width="952" alt="menu" src="https://user-images.githubusercontent.com/90764641/171053134-7db310fd-fb79-4df2-8402-1aad17489ca9.png">
 
 ### Section "Cryptocurrencies"
 After selection this chapter, you can see different elements in the sidebar. With them,
