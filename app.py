@@ -69,7 +69,7 @@ col12, col13 = st.columns([3.5, 1])
 
 
 #Side bar
-options = st.sidebar.radio('Select which asset do you want to analyse', options= ['Cryptocurrencies', 'Currencies', 'Other Assets', 'Exploratory Space', 'Menu'], index = 4)
+options = st.sidebar.radio('Select which asset do you want to analyse', options= ['Cryptocurrencies','Predictions' ,'Currencies', 'Other Assets', 'Exploratory Space', 'Menu'], index = 5)
 
 #Cryptocurrencies
 
@@ -445,6 +445,13 @@ if options == 'Cryptocurrencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
 
+#	if indicators_options == 'RSI':
+#		with col35:
+#			indicators_plot2(data, categories, crypto1, start_date, end_date)
+
+#		with col36:
+#			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
+#			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
@@ -465,17 +472,28 @@ if options == 'Cryptocurrencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Bollinger Bands can be used to determine how strongly an asset is rising and when it is potentially reversing or losing strength. An uptrend that reaches the upper band indicates that the stock is pushing higher and traders can exploit the opportunity to make a buy decision. In a strong downtrend, the price will run along the lower band, and this shows that selling activity remains strong.')
 
-
+if options == 'Predictions':
 	#4TH PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PREDICTIONS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	with header: 
+		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
 	with model_training: 
 		st.header("Predictions")
+
+	crypto1 = st.sidebar.text_input("Write the crypto symbol (E.g.: BTC) ", 'BTC')
+	categories = st.sidebar.selectbox('Select the price that you want to analyse', options = ['Close', 'Low', 'High', 'Open', 'Adj Close'], index = 0)
+	start_date = st.sidebar.date_input('Start Date', date(2021,1,1))
+	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
+	st.sidebar.markdown("Source: https://finance.yahoo.com/")
+
+	df_crypto = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= yesterday)
 
 	with col13: 
 		window = st.selectbox('Select the sliding window (Days) for Modeling', options = np.arange(1, 91), index = 6)
 
 	#Data Preparation for Modeling
 	df1 = preparation(crypto1)
-	
+
 	df2 = feature_eng(df1, crypto1)
 
 	df3 = normalization(df2)
@@ -603,15 +621,19 @@ if options == 'Cryptocurrencies':
 		st.plotly_chart(fig, use_container_width=True)
 
 	with col13:
+		#Denormalize the final result
+	#	j = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
+	#	j.dropna(inplace=True)
+
 		final_result = ((max(k.Close)-min(k.Close))*output9[0])+min(k.Close)
-		last_result = k['Close'].tail(8)
-		a2 = last_result.head(7)
-		a1 = a2.tail(1)
+		last_result = k['Close'].tail(7)
+		a1 = last_result.head(7)
+		a1 = a1.tail(1)
 		variation2 = round(((final_result - float(a1))/ float(a1))*100, 2)
 
 		#FINAL RESULT
 		d2 = today.strftime("%B %d, %Y")
-	
+		#st.markdown("""<hr style="height:5px;border:none;color:#FFC300;background-color:#FFC300;" /> """, unsafe_allow_html=True)
 		st.metric(label="Predicted closing price of " + str(crypto1) + " on " + f"{d2}", value= f"{round(final.DenormalizedClose[window],2)} USD", delta = f"{(round(variation2, 2))} %")
 		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 		st.markdown('>Considering our prediction, the price of ' + str(crypto1) + " will vary " + f"{(round(variation2, 2))} % comparing to yesterday's price.")
@@ -699,6 +721,14 @@ if options == 'Currencies':
 		with col36:
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
+
+	#if indicators_options == 'RSI':
+	#	with col35:
+	#		indicators_plot2(data2, categories, curr, start_date, end_date)
+
+	#	with col36:
+	#		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
+	#		st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
