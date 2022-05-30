@@ -426,7 +426,7 @@ if options == 'Cryptocurrencies':
 		definition2(df_crypto, categories)
 
 #INDICATORS --------------
-
+	
 	data = indicators(df_crypto)
 
 	with financial_indicators: 
