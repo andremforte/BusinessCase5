@@ -76,105 +76,8 @@ options = st.sidebar.radio('Select which asset do you want to analyse', options=
 today = date.today()
 yesterday = date.today() - timedelta(days = 1)
 
-if options == "Menu": 
-	with header: 
-		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: 	#000000;'>Welcome! In this dashboard, it is possible to analyse different financial assets in order to have more information to make better investment decisions. In the sidebar, it is possible to select which asset do you want to analyse, having indepedent analyses for each of them. Lastly, there is a section called 'Exploratory Space' where you can perform you personalized analysis, including different indicators in the same plot and extracting the information that you need.</h5>", unsafe_allow_html=True)
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
 
-	with col5:
-		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Cryptocurrencies</h3>", unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>In this chapter, there is information about Cryptocurrencies. You have access to the current price and the distribution of the prices from January 1st, 2021. Moreover, you can find information about financial indicators. Finally, using Machine Learning algorithms, it is possible to see the prediction for the next closing price for each cryptocurrency.</h5>", unsafe_allow_html=True)
-
-	with col6: 
-		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Currencies</h3>", unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>Here you can find information about Currencies. It is possible to analyse their prices’ distribution and some important financial indicators. </h5>", unsafe_allow_html=True)
-
-	with col7:
-		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Other Assets</h3>", unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>In “Other Assets”, it possible to analyse stocks prices. You can analyse financial indicators and extract interesting patterns from them.</h5>", unsafe_allow_html=True)
-
-	with dataset: 
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-
-
-if options == 'Cryptocurrencies': 
-
-	with header: 
-		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-	
-	crypto1 = st.sidebar.text_input("Write the crypto symbol (E.g.: BTC) ", 'BTC')
-	categories = st.sidebar.selectbox('Select the price that you want to analyse', options = ['Close', 'Low', 'High', 'Open', 'Adj Close'], index = 0)
-	start_date = st.sidebar.date_input('Start Date', date(2021,1,1))
-	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
-	st.sidebar.markdown("Source: https://finance.yahoo.com/")
-
-	df = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
-
-	with selection:
-		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
-
-	def definition (df, crypto, selection, date1, date2): 
-		c = df.loc[date1:date2+timedelta(days = 1)]
-		st.subheader(str(crypto) + " Prices")
-
-		fig = make_subplots(specs=[[{"secondary_y": True}]])
-
-		fig.add_scatter(x=c.index, y=c[str(selection)], secondary_y=False, name = str(crypto) + " - " + str(selection))
-
-		fig.add_bar(x=c.index, y=c.Volume, secondary_y=True, name = 'Volume')
-		    
-		fig.update_yaxes(title_text=str(selection), secondary_y=False, rangemode = 'tozero', showgrid= False)
-		fig.update_yaxes(title_text="Volume", secondary_y=True, rangemode = 'tozero', showgrid= False)
-		fig.update_xaxes(title_text = 'Date', showgrid =  False)
-
-		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', title={'text': 'Distribution of the ' + str(selection) + ' Price and Volume of ' + str(crypto),
-		                                                                                       'y':0.9,
-		                                                                                       'x':0.5,
-		                                                                                       'xanchor': 'center',
-		                                                                                       'yanchor': 'top'}, 
-		                                                                                       legend=dict(
-																							    orientation="h",
-																							    yanchor="bottom",
-																							    y=1.02,
-																							    xanchor="right",
-																							    x=1
-																							))
-
-		st.plotly_chart(fig, use_container_width=True)
-
-		
-	with col1: 
-		data = round(stock_info.get_live_price(crypto1 + "-USD"),2)
-
-		a = df['Close'].tail(8)
-		a = a.head(7)
-		a = a.tail(1)
-		variation = round(((data - float(a))/ float(a))*100,2)
-
-		definition (df, crypto1, categories,start_date, end_date)
-
-	with col2: 
-		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
-		 
-	def definition2 (df, crypto, selection): 
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df1 = round(df[[selection, 'Volume']],4).tail(8)
-		df1= pd.DataFrame(df1)
-
-		df1.reset_index(inplace = True)
-		df1['Date']= df1['Date'].dt.strftime("%d %B, %Y")
-		df1.set_index('Date', inplace = True)
-		st.dataframe(df1)
-
-	with col2:
-		definition2(df, crypto1, categories)
-
-#INDICATORS --------------
-
-	def indicators (df):
+def indicators (df):
 
 			# Set the short window and long windows
 		short_window = 50
@@ -276,6 +179,105 @@ if options == 'Cryptocurrencies':
 				df['Strategy'][x] = df['Strategy'][x-1]
 
 		return df
+
+
+if options == "Menu": 
+	with header: 
+		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: 	#000000;'>Welcome! In this dashboard, it is possible to analyse different financial assets in order to have more information to make better investment decisions. In the sidebar, it is possible to select which asset do you want to analyse, having indepedent analyses for each of them. Lastly, there is a section called 'Exploratory Space' where you can perform you personalized analysis, including different indicators in the same plot and extracting the information that you need.</h5>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+
+	with col5:
+		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Cryptocurrencies</h3>", unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>In this chapter, there is information about Cryptocurrencies. You have access to the current price and the distribution of the prices from January 1st, 2021. Moreover, you can find information about financial indicators. Finally, using Machine Learning algorithms, it is possible to see the prediction for the next closing price for each cryptocurrency.</h5>", unsafe_allow_html=True)
+
+	with col6: 
+		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Currencies</h3>", unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>Here you can find information about Currencies. It is possible to analyse their prices’ distribution and some important financial indicators. </h5>", unsafe_allow_html=True)
+
+	with col7:
+		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Other Assets</h3>", unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>In “Other Assets”, it possible to analyse stocks prices. You can analyse financial indicators and extract interesting patterns from them.</h5>", unsafe_allow_html=True)
+
+	with dataset: 
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+
+
+if options == 'Cryptocurrencies': 
+
+	with header: 
+		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+	
+	crypto1 = st.sidebar.text_input("Write the crypto symbol (E.g.: BTC) ", 'BTC')
+	categories = st.sidebar.selectbox('Select the price that you want to analyse', options = ['Close', 'Low', 'High', 'Open', 'Adj Close'], index = 0)
+	start_date = st.sidebar.date_input('Start Date', date(2021,1,1))
+	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
+	st.sidebar.markdown("Source: https://finance.yahoo.com/")
+
+	df = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
+
+	with selection:
+		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
+
+	def definition (df, crypto, selection, date1, date2): 
+		c = df.loc[date1:date2+timedelta(days = 1)]
+		st.subheader(str(crypto) + " Prices")
+
+		fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+		fig.add_scatter(x=c.index, y=c[str(selection)], secondary_y=False, name = str(crypto) + " - " + str(selection))
+
+		fig.add_bar(x=c.index, y=c.Volume, secondary_y=True, name = 'Volume')
+		    
+		fig.update_yaxes(title_text=str(selection), secondary_y=False, rangemode = 'tozero', showgrid= False)
+		fig.update_yaxes(title_text="Volume", secondary_y=True, rangemode = 'tozero', showgrid= False)
+		fig.update_xaxes(title_text = 'Date', showgrid =  False)
+
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', title={'text': 'Distribution of the ' + str(selection) + ' Price and Volume of ' + str(crypto),
+		                                                                                       'y':0.9,
+		                                                                                       'x':0.5,
+		                                                                                       'xanchor': 'center',
+		                                                                                       'yanchor': 'top'}, 
+		                                                                                       legend=dict(
+																							    orientation="h",
+																							    yanchor="bottom",
+																							    y=1.02,
+																							    xanchor="right",
+																							    x=1
+																							))
+
+		st.plotly_chart(fig, use_container_width=True)
+
+		
+	with col1: 
+		data = round(stock_info.get_live_price(crypto1 + "-USD"),2)
+
+		a = df['Close'].tail(7)
+		a = a.head(7)
+		a = a.tail(1)
+		variation = round(((data - float(a))/ float(a))*100,2)
+
+		definition (df, crypto1, categories,start_date, end_date)
+
+	with col2: 
+		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
+		 
+	def definition2 (df, crypto, selection): 
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
+		df1 = round(df[[selection, 'Volume']],4).tail(8)
+		df1= pd.DataFrame(df1)
+
+		df1.reset_index(inplace = True)
+		df1['Date']= df1['Date'].dt.strftime("%d %B, %Y")
+		df1.set_index('Date', inplace = True)
+		st.dataframe(df1)
+
+	with col2:
+		definition2(df, crypto1, categories)
+
+#INDICATORS --------------
 
 	data = indicators(df)
 
@@ -814,112 +816,6 @@ if options == 'Currencies':
 		st.header("Financial Indicators")
 
 
-	def indicators (df):
-
-			# Set the short window and long windows
-		short_window = 50
-		long_window = 100
-			# Generate the short and long moving averages (50 and 100 days, respectively)
-
-		df['SMA50'] = df['Close'].rolling(window=short_window).mean()
-		df['SMA100'] = df['Close'].rolling(window=long_window).mean()
-		df['ShortEMA'] = df['Close'].ewm(span=7, adjust=False).mean()
-
-		df['LongEMA'] = df.Close.ewm(span=26, adjust=False).mean()
-		    # Calculate the Moving Average Convergence/Divergence (MACD)
-		df['MACD'] = df['ShortEMA'] - df['LongEMA']
-		# Calcualte the signal line
-		df['Signal_Line'] = df['MACD'].ewm(span=9, adjust=False).mean()
-
-		df['Signal'] = 0.0
-
-		# Generate the trading signal 0 or 1,
-		    # where 0 is when the SMA50 is under the SMA100, and
-		    # where 1 is when the SMA50 is higher (or crosses over) the SMA100
-		df['Signal'][short_window:] = np.where(
-		    df['SMA50'][short_window:] > df['SMA100'][short_window:], 1.0, 0.0)
-		# Calculate the points in time at which a position should be taken, 1 or -1
-
-		df['Entry/Exit'] = df['Signal'].diff()
-
-		df['Up Move'] = np.nan
-		df['Down Move'] = np.nan
-		df['Average Up'] = np.nan
-		df['Average Down'] = np.nan
-		# Relative Strength
-		df['RS'] = np.nan
-		# Relative Strength Index
-		df['RSI'] = np.nan
-
-
-		for x in range(1, len(df)):
-		    df['Up Move'][x] = 0
-		    df['Down Move'][x] = 0
-		    
-		    if df['Adj Close'][x] > df['Adj Close'][x-1]:
-		        df['Up Move'][x] = df['Adj Close'][x] - df['Adj Close'][x-1]
-		        
-		    if df['Adj Close'][x] < df['Adj Close'][x-1]:
-		        df['Down Move'][x] = abs(df['Adj Close'][x] - df['Adj Close'][x-1])  
-		        
-		## Calculate initial Average Up & Down, RS and RSI
-		df['Average Up'][14] = df['Up Move'][1:15].mean()
-		df['Average Down'][14] = df['Down Move'][1:15].mean()
-		df['RS'][14] = df['Average Up'][14] / df['Average Down'][14]
-		df['RSI'][14] = 100 - (100/(1+df['RS'][14]))
-
-
-			## Calculate rest of Average Up, Average Down, RS, RSI
-		for x in range(15, len(df)):
-		    df['Average Up'][x] = (df['Average Up'][x-1]*13+df['Up Move'][x])/14
-		    df['Average Down'][x] = (df['Average Down'][x-1]*13+df['Down Move'][x])/14
-		    df['RS'][x] = df['Average Up'][x] / df['Average Down'][x]
-		    df['RSI'][x] = 100 - (100/(1+df['RS'][x]))
-
-		## Calculate the buy & sell signals
-		## Initialize the columns that we need
-		df['Long Tomorrow'] = np.nan
-		df['Buy Signal'] = np.nan
-		df['Sell Signal'] = np.nan
-		df['Buy RSI'] = np.nan
-		df['Sell RSI'] = np.nan
-		df['Strategy'] = np.nan
-
-
-			## Calculate the buy & sell signals
-		for x in range(15, len(df)):
-		    
-		    # Calculate "Long Tomorrow" column
-		    if ((df['RSI'][x] <= 40) & (df['RSI'][x-1]>40) ):
-		        df['Long Tomorrow'][x] = True
-		    elif ((df['Long Tomorrow'][x-1] == True) & (df['RSI'][x] <= 70)):
-		        df['Long Tomorrow'][x] = True
-		    else:
-		    	df['Long Tomorrow'][x] = False
-		        
-		    # Calculate "Buy Signal" column
-		    if ((df['Long Tomorrow'][x] == True) & (df['Long Tomorrow'][x-1] == False)):
-		        df['Buy Signal'][x] = df['Adj Close'][x]
-		        df['Buy RSI'][x] = df['RSI'][x]
-		        
-		    # Calculate "Sell Signal" column
-		    if ((df['Long Tomorrow'][x] == False) & (df['Long Tomorrow'][x-1] == True)):
-		        df['Sell Signal'][x] = df['Adj Close'][x]
-		        df['Sell RSI'][x] = df['RSI'][x]
-
-			## Calculate strategy performance
-		df['Strategy'][15] = df['Adj Close'][15]
-
-
-		for x in range(16, len(df)):
-		    if df['Long Tomorrow'][x-1] == True:
-		        df['Strategy'][x] = df['Strategy'][x-1]* (df['Adj Close'][x] / df['Adj Close'][x-1])
-		    else:
-		        df['Strategy'][x] = df['Strategy'][x-1]
-
-
-		return df
-
 	data2 = indicators(df_curr)
 
 
@@ -1238,114 +1134,6 @@ if options == "Other Assets":
 
 	with financial_indicators: 
 		st.header("Financial Indicators")
-
-
-	def indicators (df):
-
-			# Set the short window and long windows
-		short_window = 50
-		long_window = 100
-			# Generate the short and long moving averages (50 and 100 days, respectively)
-
-		df['SMA50'] = df['Close'].rolling(window=short_window).mean()
-		df['SMA100'] = df['Close'].rolling(window=long_window).mean()
-		df['ShortEMA'] = df['Close'].ewm(span=7, adjust=False).mean()
-
-		df['LongEMA'] = df.Close.ewm(span=26, adjust=False).mean()
-		    # Calculate the Moving Average Convergence/Divergence (MACD)
-		df['MACD'] = df['ShortEMA'] - df['LongEMA']
-		# Calcualte the signal line
-		df['Signal_Line'] = df['MACD'].ewm(span=9, adjust=False).mean()
-
-		df['Signal'] = 0.0
-
-		# Generate the trading signal 0 or 1,
-		    # where 0 is when the SMA50 is under the SMA100, and
-		    # where 1 is when the SMA50 is higher (or crosses over) the SMA100
-		df['Signal'][short_window:] = np.where(
-		    df['SMA50'][short_window:] > df['SMA100'][short_window:], 1.0, 0.0)
-		# Calculate the points in time at which a position should be taken, 1 or -1
-
-		df['Entry/Exit'] = df['Signal'].diff()
-
-		df['Up Move'] = np.nan
-		df['Down Move'] = np.nan
-		df['Average Up'] = np.nan
-		df['Average Down'] = np.nan
-		# Relative Strength
-		df['RS'] = np.nan
-		# Relative Strength Index
-		df['RSI'] = np.nan
-
-
-		for x in range(1, len(df)):
-		    df['Up Move'][x] = 0
-		    df['Down Move'][x] = 0
-		    
-		    if df['Adj Close'][x] > df['Adj Close'][x-1]:
-		        df['Up Move'][x] = df['Adj Close'][x] - df['Adj Close'][x-1]
-		        
-		    if df['Adj Close'][x] < df['Adj Close'][x-1]:
-		        df['Down Move'][x] = abs(df['Adj Close'][x] - df['Adj Close'][x-1])  
-		        
-		## Calculate initial Average Up & Down, RS and RSI
-		df['Average Up'][14] = df['Up Move'][1:15].mean()
-		df['Average Down'][14] = df['Down Move'][1:15].mean()
-		df['RS'][14] = df['Average Up'][14] / df['Average Down'][14]
-		df['RSI'][14] = 100 - (100/(1+df['RS'][14]))
-
-
-
-			## Calculate rest of Average Up, Average Down, RS, RSI
-		for x in range(15, len(df)):
-		    df['Average Up'][x] = (df['Average Up'][x-1]*13+df['Up Move'][x])/14
-		    df['Average Down'][x] = (df['Average Down'][x-1]*13+df['Down Move'][x])/14
-		    df['RS'][x] = df['Average Up'][x] / df['Average Down'][x]
-		    df['RSI'][x] = 100 - (100/(1+df['RS'][x]))
-
-		## Calculate the buy & sell signals
-		## Initialize the columns that we need
-		df['Long Tomorrow'] = np.nan
-		df['Buy Signal'] = np.nan
-		df['Sell Signal'] = np.nan
-		df['Buy RSI'] = np.nan
-		df['Sell RSI'] = np.nan
-		df['Strategy'] = np.nan
-
-
-			## Calculate the buy & sell signals
-		for x in range(15, len(df)):
-		    
-		    # Calculate "Long Tomorrow" column
-		    if ((df['RSI'][x] <= 40) & (df['RSI'][x-1]>40) ):
-		        df['Long Tomorrow'][x] = True
-		    elif ((df['Long Tomorrow'][x-1] == True) & (df['RSI'][x] <= 70)):
-		        df['Long Tomorrow'][x] = True
-		    else:
-		        df['Long Tomorrow'][x] = False
-		        
-		    # Calculate "Buy Signal" column
-		    if ((df['Long Tomorrow'][x] == True) & (df['Long Tomorrow'][x-1] == False)):
-		        df['Buy Signal'][x] = df['Adj Close'][x]
-		        df['Buy RSI'][x] = df['RSI'][x]
-		        
-		    # Calculate "Sell Signal" column
-		    if ((df['Long Tomorrow'][x] == False) & (df['Long Tomorrow'][x-1] == True)):
-		        df['Sell Signal'][x] = df['Adj Close'][x]
-		        df['Sell RSI'][x] = df['RSI'][x]
-
-			## Calculate strategy performance
-		df['Strategy'][15] = df['Adj Close'][15]
-
-
-		for x in range(16, len(df)):
-		    if df['Long Tomorrow'][x-1] == True:
-		        df['Strategy'][x] = df['Strategy'][x-1]* (df['Adj Close'][x] / df['Adj Close'][x-1])
-		    else:
-		        df['Strategy'][x] = df['Strategy'][x-1]
-
-
-		return df
 
 	data3 = indicators(df_stocks)
 
