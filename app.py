@@ -277,12 +277,14 @@ if options == 'Cryptocurrencies':
 			else:
 				df['Strategy'][x] = df['Strategy'][x-1]
 
-		#return df
+		return df
 
-	data = indicators(df)
+	#data = indicators(df)
 
 
 	def indicators_plot(data, categories, crypto, date1, date2):
+
+		data = indicators(df)
 		
 		df1= data.copy()
 
