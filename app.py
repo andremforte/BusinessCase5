@@ -174,7 +174,7 @@ if options == 'Cryptocurrencies':
 
 #INDICATORS --------------
 
-	def indicators (crypto):
+	def indicators (df):
 
 			# Set the short window and long windows
 		short_window = 50
@@ -196,8 +196,7 @@ if options == 'Cryptocurrencies':
 		# Generate the trading signal 0 or 1,
 		    # where 0 is when the SMA50 is under the SMA100, and
 		    # where 1 is when the SMA50 is higher (or crosses over) the SMA100
-		df['Signal'][short_window:] = np.where(
-		    df['SMA50'][short_window:] > df['SMA100'][short_window:], 1.0, 0.0)
+		df['Signal'][short_window:] = np.where(df['SMA50'][short_window:] > df['SMA100'][short_window:], 1.0, 0.0)
 		# Calculate the points in time at which a position should be taken, 1 or -1
 
 		df['Entry/Exit'] = df['Signal'].diff()
@@ -213,14 +212,14 @@ if options == 'Cryptocurrencies':
 
 
 		for x in range(1, len(df)):
-		    df['Up Move'][x] = 0
-		    df['Down Move'][x] = 0
-		    
-		    if df['Adj Close'][x] > df['Adj Close'][x-1]:
-		        df['Up Move'][x] = df['Adj Close'][x] - df['Adj Close'][x-1]
-		        
-		    if df['Adj Close'][x] < df['Adj Close'][x-1]:
-		        df['Down Move'][x] = abs(df['Adj Close'][x] - df['Adj Close'][x-1])  
+			df['Up Move'][x] = 0
+			df['Down Move'][x] = 0
+
+			if df['Adj Close'][x] > df['Adj Close'][x-1]:
+				df['Up Move'][x] = df['Adj Close'][x] - df['Adj Close'][x-1]
+			    
+			if df['Adj Close'][x] < df['Adj Close'][x-1]:
+				df['Down Move'][x] = abs(df['Adj Close'][x] - df['Adj Close'][x-1])  
 		        
 		## Calculate initial Average Up & Down, RS and RSI
 		df['Average Up'][14] = df['Up Move'][1:15].mean()
@@ -232,10 +231,10 @@ if options == 'Cryptocurrencies':
 
 			## Calculate rest of Average Up, Average Down, RS, RSI
 		for x in range(15, len(df)):
-		    df['Average Up'][x] = (df['Average Up'][x-1]*13+df['Up Move'][x])/14
-		    df['Average Down'][x] = (df['Average Down'][x-1]*13+df['Down Move'][x])/14
-		    df['RS'][x] = df['Average Up'][x] / df['Average Down'][x]
-		    df['RSI'][x] = 100 - (100/(1+df['RS'][x]))
+			df['Average Up'][x] = (df['Average Up'][x-1]*13+df['Up Move'][x])/14
+			df['Average Down'][x] = (df['Average Down'][x-1]*13+df['Down Move'][x])/14
+			df['RS'][x] = df['Average Up'][x] / df['Average Down'][x]
+			df['RSI'][x] = 100 - (100/(1+df['RS'][x]))
 
 		## Calculate the buy & sell signals
 		## Initialize the columns that we need
@@ -249,38 +248,37 @@ if options == 'Cryptocurrencies':
 
 			## Calculate the buy & sell signals
 		for x in range(15, len(df)):
-
 			# Calculate "Long Tomorrow" column
 			if ((df['RSI'][x] <= 40) & (df['RSI'][x-1]>40) ):
-			    df['Long Tomorrow'][x] = True
+				df['Long Tomorrow'][x] = True
 			elif ((df['Long Tomorrow'][x-1] == True) & (df['RSI'][x] <= 70)):
-			    df['Long Tomorrow'][x] = True
+				df['Long Tomorrow'][x] = True
 			else:
-			    df['Long Tomorrow'][x] = False
+				df['Long Tomorrow'][x] = False
 			    
 			# Calculate "Buy Signal" column
 			if ((df['Long Tomorrow'][x] == True) & (df['Long Tomorrow'][x-1] == False)):
-			    df['Buy Signal'][x] = df['Adj Close'][x]
-			    df['Buy RSI'][x] = df['RSI'][x]
+				df['Buy Signal'][x] = df['Adj Close'][x]
+				df['Buy RSI'][x] = df['RSI'][x]
 			    
 			# Calculate "Sell Signal" column
 			if ((df['Long Tomorrow'][x] == False) & (df['Long Tomorrow'][x-1] == True)):
-			    df['Sell Signal'][x] = df['Adj Close'][x]
-			    df['Sell RSI'][x] = df['RSI'][x]
+				df['Sell Signal'][x] = df['Adj Close'][x]
+				df['Sell RSI'][x] = df['RSI'][x]
 
 			## Calculate strategy performance
 
 		df['Strategy'][15] = df['Adj Close'][15]
 
 		for x in range(16, len(df)):
-		    if df['Long Tomorrow'][x-1] == True:
-		        df['Strategy'][x] = df['Strategy'][x-1]* (df['Adj Close'][x] / df['Adj Close'][x-1])
-		    else:
-		        df['Strategy'][x] = df['Strategy'][x-1]
+			if df['Long Tomorrow'][x-1] == True:
+				df['Strategy'][x] = df['Strategy'][x-1]* (df['Adj Close'][x] / df['Adj Close'][x-1])
+			else:
+				df['Strategy'][x] = df['Strategy'][x-1]
 
-	    return df
+		return df
 
-	data = indicators(crypto1)
+	data = indicators(df)
 
 
 	def indicators_plot(data, categories, crypto, date1, date2):
