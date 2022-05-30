@@ -415,7 +415,7 @@ if options == 'Cryptocurrencies':
 	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
 	st.sidebar.markdown("Source: https://finance.yahoo.com/")
 
-	df = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
+	df_crypto = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
 
 	with selection:
 		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
@@ -458,7 +458,7 @@ if options == 'Cryptocurrencies':
 		a = a.tail(1)
 		variation = round(((data - float(a))/ float(a))*100,2)
 
-		definition (df, crypto1, categories,start_date, end_date)
+		definition (df_crypto, crypto1, categories,start_date, end_date)
 
 	with col2: 
 		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
@@ -474,7 +474,7 @@ if options == 'Cryptocurrencies':
 		st.dataframe(df1)
 
 	with col2:
-		definition2(df, crypto1, categories)
+		definition2(df_crypto, crypto1, categories)
 
 #INDICATORS --------------
 
@@ -649,11 +649,11 @@ if options == 'Cryptocurrencies':
 
 	#Predictions for next day's closing price of the selected cryptocurrency
 
-	df= preparation(crypto1)
-	df = feature_eng(df,crypto1)
-	df = normalization(df)
-	df = correlation(df)
-	predictions1 = df.tail(window)
+	df_crypto= preparation(crypto1)
+	df_crypto = feature_eng(df_crypto,crypto1)
+	df_crypto = normalization(df_crypto)
+	df_crypto = correlation(df_crypto)
+	predictions1 = df_crypto.tail(window)
 	predictions1 = np.array(predictions1)
 
 	x_input=predictions1[len(predictions1)-window:].reshape(1,-1)
@@ -684,7 +684,7 @@ if options == 'Cryptocurrencies':
 
 	    #Final table with last X days and predictions for the next day
 
-	a = df['Close'].tail(window)
+	a = df_crypto['Close'].tail(window)
 	a = pd.DataFrame(a)
 	a.reset_index(inplace = True)
 
