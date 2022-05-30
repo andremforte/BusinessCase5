@@ -486,7 +486,7 @@ if options == 'Predictions':
 	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
 	st.sidebar.markdown("Source: https://finance.yahoo.com/")
 
-	df_crypto = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= yesterday)
+	df_crypto = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
 
 	with col13: 
 		window = st.selectbox('Select the sliding window (Days) for Modeling', options = np.arange(1, 91), index = 6)
