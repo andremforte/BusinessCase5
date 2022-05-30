@@ -488,10 +488,10 @@ if options == 'Cryptocurrencies':
 
 
 	with col24:
-		indicators = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
+		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
 
 
-	if indicators == 'Moving Average Convergence Divergence':
+	if indicators_options == 'Moving Average Convergence Divergence':
 		with col35:
 			indicators_plot(data, categories, crypto1, start_date, end_date)
 
@@ -499,7 +499,7 @@ if options == 'Cryptocurrencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
 
-	if indicators == 'RSI':
+	if indicators_options == 'RSI':
 		with col35:
 			indicators_plot2(data, categories, crypto1, start_date, end_date)
 
@@ -507,7 +507,7 @@ if options == 'Cryptocurrencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
-	if indicators == 'Moving Average': 
+	if indicators_options == 'Moving Average': 
 		with col35: 
 			indicators_plot3(data, categories, crypto1, start_date, end_date)
 
@@ -516,7 +516,7 @@ if options == 'Cryptocurrencies':
 			st.markdown('>A death cross occurs when the 50-day SMA crosses below the 100-day SMA. This is considered a bearish signal, indicating that further losses are in store. The golden cross occurs when a short-term SMA breaks above a long-term SMA. Reinforced by high trading volumes, this can signal further gains are in store.')
 
 
-	if indicators == 'Bollinger Bands':
+	if indicators_options == 'Bollinger Bands':
 		with col23:
 			window = st.slider('Select the length of the window', 5, 100, 7)
 		with col35:
