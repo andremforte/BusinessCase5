@@ -629,7 +629,7 @@ if options == 'Predictions':
 		#st.markdown("""<hr style="height:5px;border:none;color:#FFC300;background-color:#FFC300;" /> """, unsafe_allow_html=True)
 		st.metric(label="Predicted closing price of " + str(crypto1) + " on " + f"{d2}", value= f"{round(final.DenormalizedClose[window],2)} USD", delta = f"{(round(variation2, 2))} %")
 		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
-		st.markdown('>Considering our prediction, the price of ' + str(crypto1) + " will vary " + f"{(round(variation2, 2))} % comparing to yesterday's price.")
+		st.markdown('>Considering our prediction, the price of ' + str(crypto1) + " will vary " + f"{(round(variation2, 2))} % comparing to the last price.")
 
 #################################################################CURRENCIES####################################################################################
 
