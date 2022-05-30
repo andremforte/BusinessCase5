@@ -379,6 +379,73 @@ def graph2 (df, crypto, window):
 
 		return st.plotly_chart(fig, use_container_width=True)
 
+def preparation (crypto):
+		g = yf.download(str(crypto) + "-USD",  start="2021-01-01",  end= today)
+		g.dropna(inplace=True)
+		return g
+
+def feature_eng(df, crypto):
+		#financial indicators for predictions
+		df['SMA_7'] = df['Close'].rolling(window=7).mean() #Simple Moving Average - 7 days
+		df['EMA_7'] = df['Close'].ewm(span=7, adjust=False).mean()
+		df['14-high'] = df['High'].rolling(14).max()
+		df['14-low'] = df['Low'].rolling(14).min()
+		df['%K'] = (df['Close'] - df['14-low'])*100/(df['14-high'] - df['14-low'])
+		df['%D'] = df['%K'].rolling(3).mean()
+		df['spread'] =  df['High'] -  df['Low']
+		df['volatility'] =  df['spread'] /  df['Open']
+		df['close_off_high'] =  df['Close']- df['High']
+
+
+	    #external data (EURUSD Change Rate)
+		euro_dollar = yf.download("EURUSD=X", start="2021-01-01", end=yesterday)
+		external_data = euro_dollar['Close']
+		external_data = pd.DataFrame(external_data)
+		external_data.rename(columns = {'Close': 'EUR/USD_close'}, inplace = True)
+		external_data.reset_index(inplace = True)
+
+		df.reset_index(inplace = True)
+
+		#MERGE EXTERNAL DATA WITH ORIGINAL DF
+		df2 = pd.merge(df, external_data, on ='Date', how = 'outer',sort=True) 
+		merged_df = df2.merge(df, on ='Date', how = 'inner',sort=True, suffixes=('', '_y'))
+		merged_df.drop(merged_df.filter(regex='_y$').columns.tolist(),axis=1, inplace=True)
+		merged_df['EUR/USD_close'].ffill(axis = 0, inplace = True) #filling the Nan's (weekend day's) from 'Close' with the previous value (Friday)
+		merged_df.set_index('Date', inplace = True)
+
+		#ADD COLUMN BTC
+		if crypto1 != "BTC":
+		    btc = yf.download("BTC-USD",  start="2021-01-01",  end= today)
+		    btc.reset_index(inplace = True)
+		    btc = btc[['Date', 'Close']]
+		    btc.rename(columns={'Close': 'BTC_ClosePrice'}, inplace = True)        
+		    merged= pd.merge(merged_df, btc, on = 'Date', how = 'inner')
+		    merged.set_index('Date',inplace = True)
+		    final_df = merged.copy()
+
+		else:
+		    final_df = merged_df.copy()
+
+		return final_df
+
+
+def normalization(df):
+		scaler = MinMaxScaler().fit(df) 
+		df1 = pd.DataFrame(scaler.transform(df), columns=df.columns).set_index(df.index)
+		return df1
+
+def correlation (df):
+		cor_matrix = df.corr().abs()
+		upper_tri = cor_matrix.where(np.triu(np.ones(cor_matrix.shape),k=1).astype(np.bool))
+		to_drop = [column for column in upper_tri.columns if any((upper_tri[column] > 0.85) | (upper_tri[column] < -0.85))] 
+
+		if 'Close' in to_drop: 
+		    to_drop.remove('Close')
+		    to_drop.append('Open')
+
+		df1 = df.drop(to_drop, axis = 1)
+
+		return df1
 
 if options == "Menu": 
 	with header: 
@@ -533,78 +600,11 @@ if options == 'Cryptocurrencies':
 		window = st.selectbox('Select the sliding window (Days) for Modeling', options = np.arange(1, 91), index = 6)
 
 	#Data Preparation for Modeling
-	def preparation (crypto):
-		g = yf.download(str(crypto) + "-USD",  start="2021-01-01",  end= today)
-		g.dropna(inplace=True)
-		return g
-
 	df1 = preparation(crypto1)
-
-	def feature_eng(df, crypto):
-		#financial indicators for predictions
-		df['SMA_7'] = df['Close'].rolling(window=7).mean() #Simple Moving Average - 7 days
-		df['EMA_7'] = df['Close'].ewm(span=7, adjust=False).mean()
-		df['14-high'] = df['High'].rolling(14).max()
-		df['14-low'] = df['Low'].rolling(14).min()
-		df['%K'] = (df['Close'] - df['14-low'])*100/(df['14-high'] - df['14-low'])
-		df['%D'] = df['%K'].rolling(3).mean()
-		df['spread'] =  df['High'] -  df['Low']
-		df['volatility'] =  df['spread'] /  df['Open']
-		df['close_off_high'] =  df['Close']- df['High']
-
-
-	    #external data (EURUSD Change Rate)
-		euro_dollar = yf.download("EURUSD=X", start="2021-01-01", end=yesterday)
-		external_data = euro_dollar['Close']
-		external_data = pd.DataFrame(external_data)
-		external_data.rename(columns = {'Close': 'EUR/USD_close'}, inplace = True)
-		external_data.reset_index(inplace = True)
-
-		df.reset_index(inplace = True)
-
-		#MERGE EXTERNAL DATA WITH ORIGINAL DF
-		df2 = pd.merge(df, external_data, on ='Date', how = 'outer',sort=True) 
-		merged_df = df2.merge(df, on ='Date', how = 'inner',sort=True, suffixes=('', '_y'))
-		merged_df.drop(merged_df.filter(regex='_y$').columns.tolist(),axis=1, inplace=True)
-		merged_df['EUR/USD_close'].ffill(axis = 0, inplace = True) #filling the Nan's (weekend day's) from 'Close' with the previous value (Friday)
-		merged_df.set_index('Date', inplace = True)
-
-		#ADD COLUMN BTC
-		if crypto1 != "BTC":
-		    btc = yf.download("BTC-USD",  start="2021-01-01",  end= today)
-		    btc.reset_index(inplace = True)
-		    btc = btc[['Date', 'Close']]
-		    btc.rename(columns={'Close': 'BTC_ClosePrice'}, inplace = True)        
-		    merged= pd.merge(merged_df, btc, on = 'Date', how = 'inner')
-		    merged.set_index('Date',inplace = True)
-		    final_df = merged.copy()
-
-		else:
-		    final_df = merged_df.copy()
-
-		return final_df
 
 	df2 = feature_eng(df1, crypto1)
 
-	def normalization(df):
-		scaler = MinMaxScaler().fit(df) 
-		df1 = pd.DataFrame(scaler.transform(df), columns=df.columns).set_index(df.index)
-		return df1
-
 	df3 = normalization(df2)
-
-	def correlation (df):
-		cor_matrix = df.corr().abs()
-		upper_tri = cor_matrix.where(np.triu(np.ones(cor_matrix.shape),k=1).astype(np.bool))
-		to_drop = [column for column in upper_tri.columns if any((upper_tri[column] > 0.85) | (upper_tri[column] < -0.85))] 
-
-		if 'Close' in to_drop: 
-		    to_drop.remove('Close')
-		    to_drop.append('Open')
-
-		df1 = df.drop(to_drop, axis = 1)
-
-		return df1
 
 	df4 = correlation(df3)
 
@@ -637,7 +637,7 @@ if options == 'Cryptocurrencies':
 	X_test = X_test.reshape((nsamples,nx*ny))
 
 	#Model
-	my_model = XGBRegressor(n_estimators=1000, objective ='reg:linear', learning_rate = 0.05, max_depth = 1, alpha = 0.01, random_state = 1)
+	my_model = XGBRegressor(n_estimators=1000, random_state = 1)
 	my_model.fit(X_train, y_train, verbose = False)
 
 	#Predictions - train and test datasets
