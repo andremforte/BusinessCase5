@@ -30,7 +30,7 @@ Average Convergence Divergence.
 
 <img width="946" alt="Crypto" src="https://user-images.githubusercontent.com/90764641/171053253-54ad984d-f9e5-417a-b28a-e5ebe800d416.png">
 
-[IMAGE]
+<img width="951" alt="Crypto_FI" src="https://user-images.githubusercontent.com/90764641/171053892-48610c1c-40d7-4798-a2c1-f7e9dede89f7.png">
 
 ### Section "Predictions"
 Selecting "Predictions" in the sidebar, you open a page that contains the predictions for the next
@@ -53,7 +53,7 @@ extract information the financial indicators.
 In "Other Assets", the user can find information about stocks. This page follows the same structure of the
 "Cryptocurrencies" page, adapted for stocks, in this case. 
 
-<img width="360" alt="stocks analysis_READme" src="https://user-images.githubusercontent.com/90764641/171053678-9103f2f3-2c1b-4080-8bc0-6706374ad5a9.png">
+<img width="950" alt="Stock_Prices" src="https://user-images.githubusercontent.com/90764641/171053911-2de41195-3eb9-4a87-8fa1-fa8398a5202f.png">
 
 <img width="947" alt="Stock_Prices_FI" src="https://user-images.githubusercontent.com/90764641/171053579-967dfb27-6914-4ccf-9780-0b7b6252094a.png">
 
