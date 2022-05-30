@@ -250,11 +250,11 @@ if options == 'Cryptocurrencies':
 		for x in range(15, len(df)):
 			# Calculate "Long Tomorrow" column
 			if ((df['RSI'][x] <= 40) & (df['RSI'][x-1]>40) ):
-				df['Long Tomorrow'][x] = True
+				df['Long Tomorrow'][x] == True
 			elif ((df['Long Tomorrow'][x-1] == True) & (df['RSI'][x] <= 70)):
-				df['Long Tomorrow'][x] = True
+				df['Long Tomorrow'][x] == True
 			else:
-				df['Long Tomorrow'][x] = False
+				df['Long Tomorrow'][x] == False
 			    
 		for x in range(15, len(df)):
 			# Calculate "Buy Signal" column
