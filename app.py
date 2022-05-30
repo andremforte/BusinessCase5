@@ -614,8 +614,10 @@ if options == 'Cryptocurrencies':
 	#	j.dropna(inplace=True)
 
 		final_result = ((max(k.Close)-min(k.Close))*output9[0])+min(k.Close)
-		last_result = k['Close'].tail(0)
-		variation2 = round(((final_result - float(last_result))/ float(last_result))*100, 2)
+		last_result = k['Close'].tail(7)
+		a1 = last_result.head(7)
+		a1 = a1.tail(1)
+		variation2 = round(((final_result - float(a1))/ float(a1))*100, 2)
 
 		#FINAL RESULT
 		d2 = today.strftime("%B %d, %Y")
@@ -624,6 +626,8 @@ if options == 'Cryptocurrencies':
 		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 		st.markdown('>Considering our prediction, the price of ' + str(crypto1) + " will vary " + f"{(round(variation2, 2))} % comparing to yesterday's price.")
 
+	with col2: 
+		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
 #################################################################CURRENCIES####################################################################################
 
 if options == 'Currencies':
