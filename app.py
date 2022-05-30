@@ -161,7 +161,7 @@ if options == 'Cryptocurrencies':
 		 
 	def definition2 (df, crypto, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df1 = round(df[[selection, 'Volume']],4).tail(7)
+		df1 = round(df[[selection, 'Volume']],4).tail(8)
 		df1= pd.DataFrame(df1)
 
 		df1.reset_index(inplace = True)
@@ -734,7 +734,7 @@ if options == 'Cryptocurrencies':
 		j.dropna(inplace=True)
 
 		final_result = ((max(j.Close)-min(j.Close))*output9[0])+min(j.Close)
-		last_result = j['Close'].tail(1)
+		last_result = j['Close'].tail(0)
 		variation2 = round(((float(final_result) - float(last_result))/ float(last_result))*100, 2)
 
 		#FINAL RESULT
