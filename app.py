@@ -459,7 +459,7 @@ if options == 'Cryptocurrencies':
 		with col23:
 			window = st.slider('Select the length of the window', 5, 100, 7)
 		with col35:
-			graph2(df, crypto1, window)
+			graph2(df_crypto, crypto1, window)
 
 		with col36: 
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
