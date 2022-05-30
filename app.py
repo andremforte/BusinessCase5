@@ -453,7 +453,7 @@ if options == 'Cryptocurrencies':
 	with col1: 
 		data = round(stock_info.get_live_price(crypto1 + "-USD"),2)
 
-		a = df['Close'].tail(7)
+		a = df_crypto['Close'].tail(7)
 		a = a.head(7)
 		a = a.tail(1)
 		variation = round(((data - float(a))/ float(a))*100,2)
