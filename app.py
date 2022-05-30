@@ -465,7 +465,7 @@ if options == 'Cryptocurrencies':
 		 
 	def definition2 (df, crypto, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df1 = round(df[[selection, 'Volume']],4).tail(8)
+		df1 = round(df[[selection, 'Volume']],4).tail(7)
 		df1= pd.DataFrame(df1)
 
 		df1.reset_index(inplace = True)
@@ -478,7 +478,7 @@ if options == 'Cryptocurrencies':
 
 #INDICATORS --------------
 
-	data = indicators(df)
+	data = indicators(df_crypto)
 
 	with financial_indicators: 
 		st.header("Financial Indicators")
