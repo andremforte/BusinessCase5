@@ -1,55 +1,42 @@
 
 # Invest4Some Financial Dashboard
 
-**Problem type:** Dashboarding
+[PURPOSE OF THIS DASHBOARD - PARAGRAPH]
 
-**Submission date:** 30-05-2022 | 11.59pm
+### You can have access to the dashboard through this link: [INSERT LINK]
 
-## General Context
+## * Main Structure: *
 
-Data Visualization is a technique that uses graphs/charts to answer questions.
-A large portion of a data scientist's work involves data visualization, and
-while some skills may have obvious applications, data visualization is not a
-one size fits all skill. Each data visualization task is dependent on the type
-of information being explored, how the visualization will be used, the
-intended audience, and how the data will be obtained and processed. 
+### Section "Menu"
 
-Dashboarding, in particular, is a broader application of data visualization
-techniques. Dashboards come in many different shapes and sizes. They can be
-simple (e.g. a weekly sales report) or more complex (e.g. a dashboard tracking
-production, sales, predictions etc.). For each task, there are some data
-visualization techniques that work better than others. Some techniques allow
-visualization of a range of data while others need access to detailed
-information about a specific user or set of users.
+When you open the dashboard, this is the default page. Here, you find the "Menu"
+where you have general information about the three main sections in this application.
+As you can see in the top left, you have an arrow that opens a side bar. After open it,
+you have the options to select the different chapters you want to analyse. 
 
-An example of a data visualization problem could be, "My website is performing
-exceptionally well, yet I know that the data contains user information such as
-gender, age, location, and number of subscribers. How do I visualize the
-entire data set?" Using a variety of techniques, an experienced data scientist
-can illustrate this particular problem and provide useful insights.
+[FIGURE 1 - Menu page + Side bar]
 
-## Business Situation
+### Section "Cryptocurrencies"
 
-Warner Buffer and Gil Bates, partners of Investments4Some, after looking into
-the work you did during your last project, decided to hire you once again.
-They are asking you to develop a dashboard for their financial analysts.
-However, they expect a flexible dashboard, that fetches daily updated data
-about any arbitrary financial asset. They expect to use this dashboard to
-inform the investment decisions of their internal financial team and external
-stakeholders.
+### Section "Currencies"
 
-Your client expects you to create a dashboard that will be available for as
-many assets as possible. They prefer to have a generalistic dashboard to
-analyse and compare any type of asset. However, if the latter is not possible,
-they would like to get (as a fallback) a dashboard primarily focused on the
-cryptocurrencies used in the last project.
 
-## Metadata
+### Section "Other Assets"
 
-No data was provided a priori.
+### Section "Exploratory Space"
 
-## Expected outcomes
 
+# Sources: 
+    * [Plotly/Dash] (https://finance.yahoo.com/)
+      )
+
+
+
+
+
+
+
+Extra:
 1. A dashboard using any Python-based tool.
     - You may **NOT** use drag/drop dashboarding tools like Tableau, Power BI,
         Qlik Sense etc. Some suggestions:
