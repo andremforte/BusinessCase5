@@ -65,5 +65,7 @@ assets, increasing the knowledge and improving their financial decisions.
 
 <img width="945" alt="Explore_Space" src="https://user-images.githubusercontent.com/90764641/171053438-851c4b0d-2317-41a1-ac21-6f2edcb3a073.png">
 
+<img width="952" alt="Explor_Space_Crypto" src="https://user-images.githubusercontent.com/90764641/171054071-7232b558-3e45-4483-b4ad-258d1be4c657.png">
+
 # Sources: 
    *https://finance.yahoo.com/
