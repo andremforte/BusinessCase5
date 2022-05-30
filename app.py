@@ -615,7 +615,7 @@ if options == 'Cryptocurrencies':
 
 		final_result = ((max(k.Close)-min(k.Close))*output9[0])+min(k.Close)
 		last_result = k['Close'].tail(0)
-		variation2 = round(((float(final_result) - float(last_result))/ float(last_result))*100, 2)
+		variation2 = round(((final_result - float(last_result))/ float(last_result))*100, 2)
 
 		#FINAL RESULT
 		d2 = today.strftime("%B %d, %Y")
