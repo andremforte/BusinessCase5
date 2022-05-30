@@ -445,13 +445,6 @@ if options == 'Cryptocurrencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
 
-#	if indicators_options == 'RSI':
-#		with col35:
-#			indicators_plot2(data, categories, crypto1, start_date, end_date)
-
-#		with col36:
-#			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
-#			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
@@ -610,19 +603,15 @@ if options == 'Cryptocurrencies':
 		st.plotly_chart(fig, use_container_width=True)
 
 	with col13:
-		#Denormalize the final result
-	#	j = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
-	#	j.dropna(inplace=True)
-
 		final_result = ((max(k.Close)-min(k.Close))*output9[0])+min(k.Close)
-		last_result = k['Close'].tail(7)
-		a1 = last_result.head(7)
-		a1 = a1.tail(1)
+		last_result = k['Close'].tail(8)
+		a2 = last_result.head(7)
+		a1 = a2.tail(1)
 		variation2 = round(((final_result - float(a1))/ float(a1))*100, 2)
 
 		#FINAL RESULT
 		d2 = today.strftime("%B %d, %Y")
-		#st.markdown("""<hr style="height:5px;border:none;color:#FFC300;background-color:#FFC300;" /> """, unsafe_allow_html=True)
+	
 		st.metric(label="Predicted closing price of " + str(crypto1) + " on " + f"{d2}", value= f"{round(final.DenormalizedClose[window],2)} USD", delta = f"{(round(variation2, 2))} %")
 		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 		st.markdown('>Considering our prediction, the price of ' + str(crypto1) + " will vary " + f"{(round(variation2, 2))} % comparing to yesterday's price.")
@@ -710,14 +699,6 @@ if options == 'Currencies':
 		with col36:
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
-
-	#if indicators_options == 'RSI':
-	#	with col35:
-	#		indicators_plot2(data2, categories, curr, start_date, end_date)
-
-	#	with col36:
-	#		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
-	#		st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
