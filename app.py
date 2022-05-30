@@ -180,109 +180,7 @@ def indicators (df):
 
 		return df
 
-
-if options == "Menu": 
-	with header: 
-		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: 	#000000;'>Welcome! In this dashboard, it is possible to analyse different financial assets in order to have more information to make better investment decisions. In the sidebar, it is possible to select which asset do you want to analyse, having indepedent analyses for each of them. Lastly, there is a section called 'Exploratory Space' where you can perform you personalized analysis, including different indicators in the same plot and extracting the information that you need.</h5>", unsafe_allow_html=True)
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-
-	with col5:
-		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Cryptocurrencies</h3>", unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>In this chapter, there is information about Cryptocurrencies. You have access to the current price and the distribution of the prices from January 1st, 2021. Moreover, you can find information about financial indicators. Finally, using Machine Learning algorithms, it is possible to see the prediction for the next closing price for each cryptocurrency.</h5>", unsafe_allow_html=True)
-
-	with col6: 
-		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Currencies</h3>", unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>Here you can find information about Currencies. It is possible to analyse their prices’ distribution and some important financial indicators. </h5>", unsafe_allow_html=True)
-
-	with col7:
-		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Other Assets</h3>", unsafe_allow_html=True)
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>In “Other Assets”, it possible to analyse stocks prices. You can analyse financial indicators and extract interesting patterns from them.</h5>", unsafe_allow_html=True)
-
-	with dataset: 
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-
-
-if options == 'Cryptocurrencies': 
-
-	with header: 
-		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
-		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
-	
-	crypto1 = st.sidebar.text_input("Write the crypto symbol (E.g.: BTC) ", 'BTC')
-	categories = st.sidebar.selectbox('Select the price that you want to analyse', options = ['Close', 'Low', 'High', 'Open', 'Adj Close'], index = 0)
-	start_date = st.sidebar.date_input('Start Date', date(2021,1,1))
-	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
-	st.sidebar.markdown("Source: https://finance.yahoo.com/")
-
-	df = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
-
-	with selection:
-		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
-
-	def definition (df, crypto, selection, date1, date2): 
-		c = df.loc[date1:date2+timedelta(days = 1)]
-		st.subheader(str(crypto) + " Prices")
-
-		fig = make_subplots(specs=[[{"secondary_y": True}]])
-
-		fig.add_scatter(x=c.index, y=c[str(selection)], secondary_y=False, name = str(crypto) + " - " + str(selection))
-
-		fig.add_bar(x=c.index, y=c.Volume, secondary_y=True, name = 'Volume')
-		    
-		fig.update_yaxes(title_text=str(selection), secondary_y=False, rangemode = 'tozero', showgrid= False)
-		fig.update_yaxes(title_text="Volume", secondary_y=True, rangemode = 'tozero', showgrid= False)
-		fig.update_xaxes(title_text = 'Date', showgrid =  False)
-
-		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', title={'text': 'Distribution of the ' + str(selection) + ' Price and Volume of ' + str(crypto),
-		                                                                                       'y':0.9,
-		                                                                                       'x':0.5,
-		                                                                                       'xanchor': 'center',
-		                                                                                       'yanchor': 'top'}, 
-		                                                                                       legend=dict(
-																							    orientation="h",
-																							    yanchor="bottom",
-																							    y=1.02,
-																							    xanchor="right",
-																							    x=1
-																							))
-
-		st.plotly_chart(fig, use_container_width=True)
-
-		
-	with col1: 
-		data = round(stock_info.get_live_price(crypto1 + "-USD"),2)
-
-		a = df['Close'].tail(7)
-		a = a.head(7)
-		a = a.tail(1)
-		variation = round(((data - float(a))/ float(a))*100,2)
-
-		definition (df, crypto1, categories,start_date, end_date)
-
-	with col2: 
-		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
-		 
-	def definition2 (df, crypto, selection): 
-		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df1 = round(df[[selection, 'Volume']],4).tail(8)
-		df1= pd.DataFrame(df1)
-
-		df1.reset_index(inplace = True)
-		df1['Date']= df1['Date'].dt.strftime("%d %B, %Y")
-		df1.set_index('Date', inplace = True)
-		st.dataframe(df1)
-
-	with col2:
-		definition2(df, crypto1, categories)
-
-#INDICATORS --------------
-
-	data = indicators(df)
-
-
-	def indicators_plot(data, categories, crypto, date1, date2):
+		def indicators_plot(data, categories, crypto, date1, date2):
 		
 		df1= data.copy()
 
@@ -351,8 +249,7 @@ if options == 'Cryptocurrencies':
 		fig1=fig1.update_xaxes(showgrid=True, ticklabelmode="period")
 		st.plotly_chart(fig1, use_container_width=True)
 
-
-	def indicators_plot2(data, categories, crypto, date1, date2):
+		def indicators_plot2(data, categories, crypto, date1, date2):
 
 		df1= data.copy()
 
@@ -482,6 +379,106 @@ if options == 'Cryptocurrencies':
 
 		return st.plotly_chart(fig, use_container_width=True)
 
+
+if options == "Menu": 
+	with header: 
+		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: 	#000000;'>Welcome! In this dashboard, it is possible to analyse different financial assets in order to have more information to make better investment decisions. In the sidebar, it is possible to select which asset do you want to analyse, having indepedent analyses for each of them. Lastly, there is a section called 'Exploratory Space' where you can perform you personalized analysis, including different indicators in the same plot and extracting the information that you need.</h5>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+
+	with col5:
+		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Cryptocurrencies</h3>", unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>In this chapter, there is information about Cryptocurrencies. You have access to the current price and the distribution of the prices from January 1st, 2021. Moreover, you can find information about financial indicators. Finally, using Machine Learning algorithms, it is possible to see the prediction for the next closing price for each cryptocurrency.</h5>", unsafe_allow_html=True)
+
+	with col6: 
+		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Currencies</h3>", unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>Here you can find information about Currencies. It is possible to analyse their prices’ distribution and some important financial indicators. </h5>", unsafe_allow_html=True)
+
+	with col7:
+		st.markdown("<h3 style='text-align: center; color: 	#004AAD ;'>Other Assets</h3>", unsafe_allow_html=True)
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>In “Other Assets”, it possible to analyse stocks prices. You can analyse financial indicators and extract interesting patterns from them.</h5>", unsafe_allow_html=True)
+
+	with dataset: 
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+
+
+if options == 'Cryptocurrencies': 
+
+	with header: 
+		st.markdown("<h1 style='text-align: center; color: 	#191970;'>Invest4Some Financial Dashboard</h1>", unsafe_allow_html=True)
+		st.markdown("""<hr style="height:10px;border:none;color:#191970;background-color:#191970;" /> """, unsafe_allow_html=True)
+	
+	crypto1 = st.sidebar.text_input("Write the crypto symbol (E.g.: BTC) ", 'BTC')
+	categories = st.sidebar.selectbox('Select the price that you want to analyse', options = ['Close', 'Low', 'High', 'Open', 'Adj Close'], index = 0)
+	start_date = st.sidebar.date_input('Start Date', date(2021,1,1))
+	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
+	st.sidebar.markdown("Source: https://finance.yahoo.com/")
+
+	df = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
+
+	with selection:
+		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
+
+	def definition (df, crypto, selection, date1, date2): 
+		c = df.loc[date1:date2+timedelta(days = 1)]
+		st.subheader(str(crypto) + " Prices")
+
+		fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+		fig.add_scatter(x=c.index, y=c[str(selection)], secondary_y=False, name = str(crypto) + " - " + str(selection))
+
+		fig.add_bar(x=c.index, y=c.Volume, secondary_y=True, name = 'Volume')
+		    
+		fig.update_yaxes(title_text=str(selection), secondary_y=False, rangemode = 'tozero', showgrid= False)
+		fig.update_yaxes(title_text="Volume", secondary_y=True, rangemode = 'tozero', showgrid= False)
+		fig.update_xaxes(title_text = 'Date', showgrid =  False)
+
+		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', title={'text': 'Distribution of the ' + str(selection) + ' Price and Volume of ' + str(crypto),
+		                                                                                       'y':0.9,
+		                                                                                       'x':0.5,
+		                                                                                       'xanchor': 'center',
+		                                                                                       'yanchor': 'top'}, 
+		                                                                                       legend=dict(
+																							    orientation="h",
+																							    yanchor="bottom",
+																							    y=1.02,
+																							    xanchor="right",
+																							    x=1
+																							))
+
+		st.plotly_chart(fig, use_container_width=True)
+
+		
+	with col1: 
+		data = round(stock_info.get_live_price(crypto1 + "-USD"),2)
+
+		a = df['Close'].tail(7)
+		a = a.head(7)
+		a = a.tail(1)
+		variation = round(((data - float(a))/ float(a))*100,2)
+
+		definition (df, crypto1, categories,start_date, end_date)
+
+	with col2: 
+		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
+		 
+	def definition2 (df, crypto, selection): 
+		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
+		df1 = round(df[[selection, 'Volume']],4).tail(8)
+		df1= pd.DataFrame(df1)
+
+		df1.reset_index(inplace = True)
+		df1['Date']= df1['Date'].dt.strftime("%d %B, %Y")
+		df1.set_index('Date', inplace = True)
+		st.dataframe(df1)
+
+	with col2:
+		definition2(df, crypto1, categories)
+
+#INDICATORS --------------
+
+	data = indicators(df)
 
 	with financial_indicators: 
 		st.header("Financial Indicators")
@@ -818,208 +815,6 @@ if options == 'Currencies':
 
 	data2 = indicators(df_curr)
 
-
-	def indicators_plot(data, categories, crypto, date1, date2):
-		
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-			# Visualize exit position relative to close price
-		exit = df[df['Entry/Exit'] == -1.0]['Close'].hvplot.scatter(
-		    color='red',
-		    legend=False,
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400, hover_cols=[str(crypto)]
-		)
-		# Visualize entry position relative to close price
-		entry = df[df['Entry/Exit'] == 1.0]['Close'].hvplot.scatter(
-		    color='green',
-		    legend=False,
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400, hover_cols=[str(crypto)]
-		)
-		# Visualize close price for the investment
-		security_close = df[['Close']].hvplot(
-		    line_color='lightgray',
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400, hover_cols=[str(crypto)]
-		)
-		# Visualize moving averages
-		moving_avgs = df[['SMA50', 'SMA100']].hvplot(
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400,hover_cols=[str(crypto)]
-		)
-		# Overlay plots for the SMA
-		entry_exit_plot = security_close * moving_avgs * entry * exit
-		fig=entry_exit_plot.opts(xaxis=None)
-		#st.bokeh_chart(hv.render(fig, backend='bokeh'))
-
-
-		# plot for MACD and Signal line
-		fig1 = go.Figure()
-		fig1.add_trace(go.Scatter(
-		    name="MACD",
-		    mode="lines", x=df.index, y=df["MACD"],
-		))
-		fig1.add_trace(go.Scatter(
-		    name="Signal_Line",
-		    mode="lines", x=df.index, y=df["Signal_Line"],
-		    
-		))
-		
-		# Updating layout
-		fig1.update_layout(
-		    title={'text':'MACD indicator',
-		    'y':0.9,
-	       'x':0.5,
-	       'xanchor': 'center',
-	       'yanchor': 'top'}, 
-		    xaxis_title='Date',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)'
-		)
-
-
-		fig1=fig1.update_xaxes(showgrid=True, ticklabelmode="period")
-		st.plotly_chart(fig1, use_container_width=True)
-
-
-	def indicators_plot2(data, categories, crypto, date1, date2):
-
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-	# plot for RSI
-		fig2 = go.Figure()
-		fig2.add_trace(go.Scatter(
-		    name="Buy",
-		    mode="markers", x=df.index, y=df["Buy RSI"],
-		))
-		fig2.add_trace(go.Scatter(
-		    name="Sell",
-		    mode="markers", x=df.index, y=df["Sell RSI"],
-		    
-		))
-		
-		fig2.add_trace(go.Scatter(
-		    name="RSI",
-		    mode="lines", x=df.index, y=df["RSI"]
-		    
-		))
-		
-		# Updating layout
-		fig2.update_layout(
-		    title={'text':'RSI indicator',
-		     'y':0.9,
-		       'x':0.5,
-		       'xanchor': 'center',
-		       'yanchor': 'top'}, 
-		    xaxis_title='Date',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', legend=dict(orientation="h",
-																							    yanchor="bottom",
-																							    y=1.02,
-																							    xanchor="right",
-																							    x=1
-																							)
-		)
-
-	
-		fig2=fig2.update_xaxes(showgrid=True, ticklabelmode="period")
-
-		st.plotly_chart(fig2, use_container_width=True)
-
-
-	def indicators_plot3(data, categories, crypto, date1, date2):
-
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-		# plot for SMA in plotly
-		fig = go.Figure()
-		
-		fig.add_trace(go.Scatter(
-		    name="Exit",
-		    mode="markers", x=df[df['Entry/Exit'] == -1.0]['Close'].index, y=df[df['Entry/Exit'] == -1.0]['Close'], marker_color='red'
-		    
-		))
-		
-		fig.add_trace(go.Scatter(
-		    name="Entry",
-		    mode="markers", x=df[df['Entry/Exit'] == 1.0]['Close'].index, y=df[df['Entry/Exit'] == 1.0]['Close'], marker_color='green'
-		    
-		))
-		
-		fig.add_trace(go.Scatter(
-		    name="Close",
-		    mode="lines", x=df.index, y=df["Close"], line_color='grey'
-		))
-
-		fig.add_trace(go.Scatter(
-		    name="SMA50",
-		    mode="lines", x=df.index, y=df["SMA50"], line_color='red'
-		))
-
-		fig.add_trace(go.Scatter(
-		    name="SMA100",
-		    mode="lines", x=df.index, y=df["SMA100"], line_color='gold'
-		))
-
-		# Updating layout
-		fig.update_layout(
-			title={'text': "Simple Moving Average indicator for " + str(crypto),
-			       'y':0.9,
-			       'x':0.5,
-			       'xanchor': 'center',
-			       'yanchor': 'top'},
-		    xaxis_title='Date',
-		    yaxis_title='Price',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',
-		)
-
-		fig=fig.update_xaxes(showgrid=True, ticklabelmode="period")
-		st.plotly_chart(fig, use_container_width=True)
-
-
-	def graph2 (df, crypto, window):
-		data = df.copy()
-		data['MA' + str(window)] = data.Close.rolling(window = window).mean()
-
-		std = data.Close.rolling(window).std()
-		bollinger_up = data['MA' + str(window)] + std * 2 # Calculate top band
-		bollinger_down = data['MA' + str(window)] - std * 2 # Calculate bottom band
-
-		data['bollinger_up'] = bollinger_up
-		data['bollinger_down'] = bollinger_down
-
-		fig = go.Figure(data = [go.Candlestick(x=data.index,
-			                open=data['Open'],
-			                high=data['High'],
-			                low=data['Low'],
-			                close=data['Close'], name = str(crypto) + ' prices'),
-						go.Scatter(x=data.index, y=data['bollinger_up'], line=dict(color='orange', width=2), name = "Bollinger Up"),
-						go.Scatter(x=data.index, y=data['bollinger_down'], line=dict(color='blue', width=2), name = "Bollinger Down")])
-
-		# Add titles
-		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', title={'text': "Bollinger Bands for " + str(crypto),
-																						       'y':0.9,
-																						       'x':0.5,
-																						       'xanchor': 'center',
-																						       'yanchor': 'top'}, 
-																						        yaxis_title='Prices',
-																						        xaxis_title = 'Date')
-
-		return st.plotly_chart(fig, use_container_width=True)
-
-
 	with col24:
 		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
 
@@ -1136,208 +931,6 @@ if options == "Other Assets":
 		st.header("Financial Indicators")
 
 	data3 = indicators(df_stocks)
-
-
-	def indicators_plot(data, categories, crypto, date1, date2):
-		
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-			# Visualize exit position relative to close price
-		exit = df[df['Entry/Exit'] == -1.0]['Close'].hvplot.scatter(
-		    color='red',
-		    legend=False,
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400, hover_cols=[str(crypto)]
-		)
-		# Visualize entry position relative to close price
-		entry = df[df['Entry/Exit'] == 1.0]['Close'].hvplot.scatter(
-		    color='green',
-		    legend=False,
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400, hover_cols=[str(crypto)]
-		)
-		# Visualize close price for the investment
-		security_close = df[['Close']].hvplot(
-		    line_color='lightgray',
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400, hover_cols=[str(crypto)]
-		)
-		# Visualize moving averages
-		moving_avgs = df[['SMA50', 'SMA100']].hvplot(
-		    ylabel='Price in $',
-		    width=1000,
-		    height=400,hover_cols=[str(crypto)]
-		)
-		# Overlay plots for the SMA
-		entry_exit_plot = security_close * moving_avgs * entry * exit
-		fig=entry_exit_plot.opts(xaxis=None)
-		#st.bokeh_chart(hv.render(fig, backend='bokeh'))
-
-
-		# plot for MACD and Signal line
-		fig1 = go.Figure()
-		fig1.add_trace(go.Scatter(
-		    name="MACD",
-		    mode="lines", x=df.index, y=df["MACD"],
-		))
-		fig1.add_trace(go.Scatter(
-		    name="Signal_Line",
-		    mode="lines", x=df.index, y=df["Signal_Line"],
-		    
-		))
-		
-		# Updating layout
-		fig1.update_layout(
-		    title={'text':'MACD indicator',
-		    'y':0.9,
-	       'x':0.5,
-	       'xanchor': 'center',
-	       'yanchor': 'top'}, 
-		    xaxis_title='Date',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)'
-		)
-
-
-		fig1=fig1.update_xaxes(showgrid=True, ticklabelmode="period")
-		st.plotly_chart(fig1, use_container_width=True)
-
-
-	def indicators_plot2(data, categories, crypto, date1, date2):
-
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-	# plot for RSI
-		fig2 = go.Figure()
-		fig2.add_trace(go.Scatter(
-		    name="Buy",
-		    mode="markers", x=df.index, y=df["Buy RSI"],
-		))
-		fig2.add_trace(go.Scatter(
-		    name="Sell",
-		    mode="markers", x=df.index, y=df["Sell RSI"],
-		    
-		))
-		
-		fig2.add_trace(go.Scatter(
-		    name="RSI",
-		    mode="lines", x=df.index, y=df["RSI"]
-		    
-		))
-		
-		# Updating layout
-		fig2.update_layout(
-		    title={'text':'RSI indicator',
-		     'y':0.9,
-		       'x':0.5,
-		       'xanchor': 'center',
-		       'yanchor': 'top'}, 
-		    xaxis_title='Date',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',legend=dict(orientation="h",
-																							    yanchor="bottom",
-																							    y=1.02,
-																							    xanchor="right",
-																							    x=1
-																							)
-		)
-
-	
-		fig2=fig2.update_xaxes(showgrid=True, ticklabelmode="period")
-
-		st.plotly_chart(fig2, use_container_width=True)
-
-
-	def indicators_plot3(data, categories, crypto, date1, date2):
-
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-		# plot for SMA in plotly
-		fig = go.Figure()
-		
-		fig.add_trace(go.Scatter(
-		    name="Exit",
-		    mode="markers", x=df[df['Entry/Exit'] == -1.0]['Close'].index, y=df[df['Entry/Exit'] == -1.0]['Close'], marker_color='red'
-		    
-		))
-		
-		fig.add_trace(go.Scatter(
-		    name="Entry",
-		    mode="markers", x=df[df['Entry/Exit'] == 1.0]['Close'].index, y=df[df['Entry/Exit'] == 1.0]['Close'], marker_color='green'
-		    
-		))
-		
-		fig.add_trace(go.Scatter(
-		    name="Close",
-		    mode="lines", x=df.index, y=df["Close"], line_color='grey'
-		))
-
-		fig.add_trace(go.Scatter(
-		    name="SMA50",
-		    mode="lines", x=df.index, y=df["SMA50"], line_color='red'
-		))
-
-		fig.add_trace(go.Scatter(
-		    name="SMA100",
-		    mode="lines", x=df.index, y=df["SMA100"], line_color='gold'
-		))
-
-		# Updating layout
-		fig.update_layout(
-			title={'text': "Simple Moving Average indicator for " + str(crypto),
-			       'y':0.9,
-			       'x':0.5,
-			       'xanchor': 'center',
-			       'yanchor': 'top'},
-		    xaxis_title='Date',
-		    yaxis_title='Price',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',
-		)
-
-		fig=fig.update_xaxes(showgrid=True, ticklabelmode="period")
-		st.plotly_chart(fig, use_container_width=True)
-
-
-	def graph2 (df, crypto, window):
-		data = df.copy()
-		data['MA' + str(window)] = data.Close.rolling(window = window).mean()
-
-		std = data.Close.rolling(window).std()
-		bollinger_up = data['MA' + str(window)] + std * 2 # Calculate top band
-		bollinger_down = data['MA' + str(window)] - std * 2 # Calculate bottom band
-
-		data['bollinger_up'] = bollinger_up
-		data['bollinger_down'] = bollinger_down
-
-		fig = go.Figure(data = [go.Candlestick(x=data.index,
-			                open=data['Open'],
-			                high=data['High'],
-			                low=data['Low'],
-			                close=data['Close'], name = str(crypto) + ' prices'),
-						go.Scatter(x=data.index, y=data['bollinger_up'], line=dict(color='orange', width=2), name = "Bollinger Up"),
-						go.Scatter(x=data.index, y=data['bollinger_down'], line=dict(color='blue', width=2), name = "Bollinger Down")])
-
-		# Add titles
-		fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', title={'text': "Bollinger Bands for " + str(crypto),
-																						       'y':0.9,
-																						       'x':0.5,
-																						       'xanchor': 'center',
-																						       'yanchor': 'top'}, 
-																						        yaxis_title='Prices',
-																						        xaxis_title = 'Date')
-
-		return st.plotly_chart(fig, use_container_width=True)
-
 
 	with col24:
 		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
