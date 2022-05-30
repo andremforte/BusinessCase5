@@ -20,6 +20,8 @@ from plotly.subplots import make_subplots
 from streamlit_option_menu import option_menu
 
 
+
+
 #Dashboard configuration <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 st.set_page_config(page_title="Invest4Some Financial dashboard",
@@ -158,7 +160,9 @@ if options == 'Cryptocurrencies':
 
 	with col2: 
 		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
-		 
+		
+
+	@st.cache(suppress_st_warning=True)  
 	def definition2 (df, crypto, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
 		df1 = round(df[[selection, 'Volume']],4).tail(7)
@@ -174,7 +178,7 @@ if options == 'Cryptocurrencies':
 
 #INDICATORS --------------
 
-	def indicators (crypto):
+	def indicators (df, crypto):
 
 			# Set the short window and long windows
 		short_window = 50
@@ -184,7 +188,6 @@ if options == 'Cryptocurrencies':
 		df['SMA50'] = df['Close'].rolling(window=short_window).mean()
 		df['SMA100'] = df['Close'].rolling(window=long_window).mean()
 		df['ShortEMA'] = df['Close'].ewm(span=7, adjust=False).mean()
-
 		df['LongEMA'] = df.Close.ewm(span=26, adjust=False).mean()
 		    # Calculate the Moving Average Convergence/Divergence (MACD)
 		df['MACD'] = df['ShortEMA'] - df['LongEMA']
@@ -202,6 +205,7 @@ if options == 'Cryptocurrencies':
 
 		df['Entry/Exit'] = df['Signal'].diff()
 
+		#RSI
 		df['Up Move'] = np.nan
 		df['Down Move'] = np.nan
 		df['Average Up'] = np.nan
@@ -278,9 +282,9 @@ if options == 'Cryptocurrencies':
 		    else:
 		        df['Strategy'][x] = df['Strategy'][x-1]
 
-	    return df
+		return df
 
-	data = indicators(crypto1)
+	data = indicators(df, crypto1)
 
 
 	def indicators_plot(data, categories, crypto, date1, date2):
