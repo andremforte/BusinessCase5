@@ -368,7 +368,7 @@ if options == 'Cryptocurrencies':
 		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
 
 	def definition (df, crypto, selection, date1, date2): 
-		c = df.loc[date1:date2+timedelta(days = 1)]
+		c = df.loc[date1:date2+timedelta(days =2)]
 		st.subheader(str(crypto) + " Prices")
 
 		fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -412,9 +412,8 @@ if options == 'Cryptocurrencies':
 		 
 	def definition2 (df, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df5 = round(df[[selection, 'Volume']],4).tail(8)
-		df6 = df5.head(8)
-		df6= pd.DataFrame(df6)
+		df5 = round(df[[selection, 'Volume']],4).tail(7)
+		df6 = pd.DataFrame(df5)
 		df6.reset_index(inplace = True)
 		df6['Date']= df6['Date'].dt.strftime("%d %B, %Y")
 		df6.set_index('Date', inplace = True)
@@ -792,7 +791,7 @@ if options == "Other Assets":
 		real_time_stock = round(stock_info.get_live_price(stocks),2)
 
 		df_var3 = df_stocks.copy()
-		a3 = df_var3['Close'].iloc[-2]
+		a3 = df_var3['Close'].iloc[-1]
 		variation3 = round(((real_time_stock - float(a3))/ float(a3))*100,2)
 
 		stocks_plot(df_stocks, stocks,categories,start_date, end_date)
