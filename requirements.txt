@@ -1,3 +1,4 @@
+gunicorn
 yfinance
 plotly
 requests
