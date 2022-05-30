@@ -1,8 +1,11 @@
 # Invest4Some Financial Dashboard
 
-[PURPOSE OF THIS DASHBOARD - PARAGRAPH]
+The purpose of this dashboard is to help the financial analysts from Invest4some to improve their
+financial decisions. Due to that, the dashboard contains information about cryptocurrencies, currencies
+and stocks. There is also a space to compare the assets and make personalized analyses. 
+All of the information is explained below. 
 
-### You can have access to the dashboard through this link: (https://share.streamlit.io/andremforte/businesscase5/main/app.py)
+### Access the dashboard through this link: https://share.streamlit.io/andremforte/businesscase5/main/app.py
 
 ##  Main Structure: 
 
@@ -51,11 +54,11 @@ In "Other Assets", the user can find information about stocks. This page follows
 
 ### Section "Exploratory Space"
 Until now, all of the spaces are more informative. Since we want to make sure that the users can extract 
-the maximum information from our application, we decided to create an Exploratory Space. This page is an open 
-space where the users can perform their personalized analyses. Here, there is a possibility of compare assets, 
-increasing the knowledge and improving their financial decisions. 
+the maximum information from our application, we decided to create an Exploratory Space. This page is an 
+open space where the users can perform their personalized analyses. Here, there is a possibility of compare 
+assets, increasing the knowledge and improving their financial decisions. 
 
 [IMAGE]
 
 # Sources: 
-    * [Plotly/Dash](https://finance.yahoo.com/)]
+   *https://finance.yahoo.com/
