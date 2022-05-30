@@ -474,9 +474,6 @@ if options == 'Predictions':
 		st.header("Predictions")
 
 	crypto1 = st.sidebar.text_input("Write the crypto symbol (E.g.: BTC) ", 'BTC')
-	categories = st.sidebar.selectbox('Select the price that you want to analyse', options = ['Close', 'Low', 'High', 'Open', 'Adj Close'], index = 0)
-	start_date = st.sidebar.date_input('Start Date', date(2021,1,1))
-	end_date = st.sidebar.date_input('End Date', date.today()-timedelta(days=1))
 	st.sidebar.markdown("Source: https://finance.yahoo.com/")
 
 	df_crypto = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
