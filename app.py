@@ -482,7 +482,7 @@ if options == 'Cryptocurrencies':
 
 	#Data Preparation for Modeling
 	df1 = preparation(crypto1)
-
+	
 	df2 = feature_eng(df1, crypto1)
 
 	df3 = normalization(df2)
