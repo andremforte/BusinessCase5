@@ -368,7 +368,7 @@ if options == 'Cryptocurrencies':
 		st.markdown("<h2 style='text-align: center; color: 	#00000;'>Cryptocurrencies Analysis</h2>", unsafe_allow_html=True)
 
 	def definition (df, crypto, selection, date1, date2): 
-		c = df.loc[date1:date2+timedelta(days =2)]
+		c = df.loc[date1:date2+timedelta(days =1)]
 		st.subheader(str(crypto) + " Prices")
 
 		fig = make_subplots(specs=[[{"secondary_y": True}]])
