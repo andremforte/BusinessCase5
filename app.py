@@ -254,7 +254,7 @@ if options == 'Cryptocurrencies':
 			elif ((df['Long Tomorrow'][x-1] == True) & (df['RSI'][x] <= 70)):
 				df['Long Tomorrow'][x] = True
 			else:
-				df['Long Tomorrow'][x] == False
+				df['Long Tomorrow'][x] = False
 			    
 		for x in range(15, len(df)):
 			# Calculate "Buy Signal" column
@@ -277,7 +277,7 @@ if options == 'Cryptocurrencies':
 			else:
 				df['Strategy'][x] = df['Strategy'][x-1]
 
-		return df
+		#return df
 
 	data = indicators(df)
 
@@ -673,11 +673,11 @@ if options == 'Cryptocurrencies':
 
 		if(len(temp_input)>window):        
 		    x_input=np.array(temp_input[i:])
-		    print("{} day input {}".format(i,x_input))
+		   # print("{} day input {}".format(i,x_input))
 		    x_input=x_input.reshape(1,-1)
 		    
 		    yhat = my_model.predict(x_input)
-		    print("{} day output {}".format(i,yhat))
+		  #  print("{} day output {}".format(i,yhat))
 		    temp_input.extend(yhat.tolist())
 		    temp_input=temp_input[i:]
 		   
