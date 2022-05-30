@@ -249,52 +249,6 @@ def indicators_plot(data, categories, crypto, date1, date2):
 		fig1=fig1.update_xaxes(showgrid=True, ticklabelmode="period")
 		st.plotly_chart(fig1, use_container_width=True)
 
-def indicators_plot2(data, categories, crypto, date1, date2):
-
-		df1= data.copy()
-
-		df = df1.loc[date1:date2+timedelta(days = 1)]
-
-	# plot for RSI
-		fig2 = go.Figure()
-		fig2.add_trace(go.Scatter(
-		    name="Buy",
-		    mode="markers", x=df.index, y=df["Buy RSI"],
-		))
-		fig2.add_trace(go.Scatter(
-		    name="Sell",
-		    mode="markers", x=df.index, y=df["Sell RSI"],
-		    
-		))
-		
-		fig2.add_trace(go.Scatter(
-		    name="RSI",
-		    mode="lines", x=df.index, y=df["RSI"]
-		    
-		))
-		
-		# Updating layout
-		fig2.update_layout(
-		    title={'text':'RSI indicator',
-		     'y':0.9,
-		       'x':0.5,
-		       'xanchor': 'center',
-		       'yanchor': 'top'}, 
-		    xaxis_title='Date',
-		    template='plotly_white',
-		    paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)', legend=dict(orientation="h",
-																							    yanchor="bottom",
-																							    y=1.02,
-																							    xanchor="right",
-																							    x=1
-																							)
-		)
-
-	
-		fig2=fig2.update_xaxes(showgrid=True, ticklabelmode="period")
-
-		st.plotly_chart(fig2, use_container_width=True)
-
 
 def indicators_plot3(data, categories, crypto, date1, date2):
 
@@ -553,8 +507,8 @@ if options == 'Cryptocurrencies':
 
 
 	with col24:
-		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
-
+		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'Bollinger Bands', 'Moving Average'], index = 0)
+ 																							#RSI
 
 	if indicators_options == 'Moving Average Convergence Divergence':
 		with col35:
@@ -564,13 +518,13 @@ if options == 'Cryptocurrencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
 
-	if indicators_options == 'RSI':
-		with col35:
-			indicators_plot2(data, categories, crypto1, start_date, end_date)
+#	if indicators_options == 'RSI':
+#		with col35:
+#			indicators_plot2(data, categories, crypto1, start_date, end_date)
 
-		with col36:
-			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
-			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
+#		with col36:
+#			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
+#			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
@@ -817,7 +771,7 @@ if options == 'Currencies':
 	data2 = indicators(df_curr)
 
 	with col24:
-		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
+		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'Bollinger Bands', 'Moving Average'], index = 0)
 
 
 	if indicators_options == 'Moving Average Convergence Divergence':
@@ -828,13 +782,13 @@ if options == 'Currencies':
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
 
-	if indicators_options == 'RSI':
-		with col35:
-			indicators_plot2(data2, categories, curr, start_date, end_date)
+	#if indicators_options == 'RSI':
+	#	with col35:
+	#		indicators_plot2(data2, categories, curr, start_date, end_date)
 
-		with col36:
-			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
-			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
+	#	with col36:
+	#		st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
+	#		st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
@@ -934,7 +888,7 @@ if options == "Other Assets":
 	data3 = indicators(df_stocks)
 
 	with col24:
-		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'RSI', 'Bollinger Bands', 'Moving Average'], index = 0)
+		indicators_options = st.selectbox('Select the indicator', options = ['Moving Average Convergence Divergence', 'Bollinger Bands', 'Moving Average'], index = 0)
 
 
 	if indicators_options == 'Moving Average Convergence Divergence':
@@ -945,13 +899,13 @@ if options == "Other Assets":
 			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
 			st.markdown('>Traders may buy the security when the MACD crosses above its signal line and sell—or short—the security when the MACD crosses below the signal line.')
 
-	if indicators_options == 'RSI':
-		with col35:
-			indicators_plot2(data3, categories, stocks, start_date, end_date)
+#	if indicators_options == 'RSI':
+#		with col35:
+#			indicators_plot2(data3, categories, stocks, start_date, end_date)
 
-		with col36:
-			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
-			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
+#		with col36:
+#			st.markdown ("<h5 color: 	#000000;'>Important Information: </h5>", unsafe_allow_html=True)
+#			st.markdown('> In Relative Strength Index (RSI), values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 or below indicates an oversold or undervalued condition.')
 
 	if indicators_options == 'Moving Average': 
 		with col35: 
