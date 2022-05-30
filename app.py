@@ -400,9 +400,7 @@ if options == 'Cryptocurrencies':
 	with col1: 
 		real_price = round(stock_info.get_live_price(crypto1 + "-USD"),2)
 
-		a = df_crypto['Close'].tail(7)
-		a = a.head(7)
-		a = a.tail(1)
+		a = df_crypto['Close'].iloc[-1]
 		variation = round(((real_price - float(a))/ float(a))*100,2)
 
 		definition (df_crypto, crypto1, categories,start_date, end_date)
@@ -791,7 +789,7 @@ if options == "Other Assets":
 		real_time_stock = round(stock_info.get_live_price(stocks),2)
 
 		df_var3 = df_stocks.copy()
-		a3 = df_var3['Close'].iloc[-1]
+		a3 = df_var3['Close'].iloc[-2]
 		variation3 = round(((real_time_stock - float(a3))/ float(a3))*100,2)
 
 		stocks_plot(df_stocks, stocks,categories,start_date, end_date)
