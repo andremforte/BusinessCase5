@@ -35,23 +35,27 @@ consider for Modeling and analyse their distribution over time.
 [IMAGE] 
 
 ### Section "Currencies"
-
-
+In this section, the user can analyse the currencies market. The sidebar has updated fields to fill
+specific for this asset. Here, the user can analyse the distribution of prices across time of each currency, 
+analyse the real-time value and the prices of the last 7 days. Like "Cryptocurrencies", the user can 
+extract information the financial indicators. 
 
 [IMAGE]
 
 ### Section "Other Assets"
-
+In "Other Assets", the user can find information about stocks. This page follows the same structure of the
+"Cryptocurrencies" page, adapted for stocks, in this case. 
 
 
 [IMAGE]
 
 ### Section "Exploratory Space"
-
-
+Until now, all of the spaces are more informative. Since we want to make sure that the users can extract 
+the maximum information from our application, we decided to create an Exploratory Space. This page is an open 
+space where the users can perform their personalized analyses. Here, there is a possibility of compare assets, 
+increasing the knowledge and improving their financial decisions. 
 
 [IMAGE]
 
 # Sources: 
-    * [Plotly/Dash](https://finance.yahoo.com/)
-      )
+    * [Plotly/Dash](https://finance.yahoo.com/)]
