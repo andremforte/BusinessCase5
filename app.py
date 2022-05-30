@@ -532,13 +532,13 @@ if options == 'Cryptocurrencies':
 		 
 	def definition2 (df, crypto, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df4 = round(df[[selection, 'Volume']],4).tail(8)
-		df5 = df4.head(8)
-		df5= pd.DataFrame(df5)
-		df5.reset_index(inplace = True)
-		df5['Date']= df5['Date'].dt.strftime("%d %B, %Y")
-		df5.set_index('Date', inplace = True)
-		st.dataframe(df5)
+		df5 = round(df[[selection, 'Volume']],4).tail(8)
+		df6 = df5.head(8)
+		df6= pd.DataFrame(df6)
+		df6.reset_index(inplace = True)
+		df6['Date']= df5['Date'].dt.strftime("%d %B, %Y")
+		df6.set_index('Date', inplace = True)
+		st.dataframe(df6)
 
 
 	with col2:
@@ -730,11 +730,11 @@ if options == 'Cryptocurrencies':
 
 	with col13:
 		#Denormalize the final result
-		j = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
-		j.dropna(inplace=True)
+	#	j = yf.download(str(crypto1) + "-USD",  start="2021-01-01",  end= today)
+	#	j.dropna(inplace=True)
 
-		final_result = ((max(j.Close)-min(j.Close))*output9[0])+min(j.Close)
-		last_result = j['Close'].tail(0)
+		final_result = ((max(k.Close)-min(k.Close))*output9[0])+min(k.Close)
+		last_result = k['Close'].tail(0)
 		variation2 = round(((float(final_result) - float(last_result))/ float(last_result))*100, 2)
 
 		#FINAL RESULT
