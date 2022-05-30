@@ -398,19 +398,19 @@ if options == 'Cryptocurrencies':
 
 		
 	with col1: 
-		data = round(stock_info.get_live_price(crypto1 + "-USD"),2)
+		real_price = round(stock_info.get_live_price(crypto1 + "-USD"),2)
 
 		a = df_crypto['Close'].tail(7)
 		a = a.head(7)
 		a = a.tail(1)
-		variation = round(((data - float(a))/ float(a))*100,2)
+		variation = round(((real_price - float(a))/ float(a))*100,2)
 
 		definition (df_crypto, crypto1, categories,start_date, end_date)
 
 	with col2: 
-		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{data} USD", delta = f"{variation} %")
+		st.metric(label="Current Trading Price "f"(% difference from yesterday's closing price)", value=f"{real_price} USD", delta = f"{variation} %")
 		 
-	def definition2 (df, crypto, selection): 
+	def definition2 (df, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
 		df5 = round(df[[selection, 'Volume']],4).tail(8)
 		df6 = df5.head(8)
@@ -422,7 +422,7 @@ if options == 'Cryptocurrencies':
 
 
 	with col2:
-		definition2(df_crypto, crypto1, categories)
+		definition2(df_crypto, categories)
 
 #INDICATORS --------------
 
