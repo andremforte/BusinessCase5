@@ -536,7 +536,7 @@ if options == 'Cryptocurrencies':
 		df6 = df5.head(8)
 		df6= pd.DataFrame(df6)
 		df6.reset_index(inplace = True)
-		df6['Date']= df5['Date'].dt.strftime("%d %B, %Y")
+		df6['Date']= df6['Date'].dt.strftime("%d %B, %Y")
 		df6.set_index('Date', inplace = True)
 		st.dataframe(df6)
 
