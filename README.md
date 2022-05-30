@@ -28,14 +28,16 @@ table, so you can see the exact numbers of the last 7 days. In the second subsec
 the possibility of analyse three financial indicators: Moving Average, Bollinger Bands and Moving 
 Average Convergence Divergence. 
 
-[IMAGES] 
+<img width="946" alt="Crypto" src="https://user-images.githubusercontent.com/90764641/171053253-54ad984d-f9e5-417a-b28a-e5ebe800d416.png">
+
+[IMAGE]
 
 ### Section "Predictions"
 Selecting "Predictions" in the sidebar, you open a page that contains the predictions for the next
 closing price of the selected cryptocurrency. You can select the length of the days you want to 
 consider for Modeling and analyse their distribution over time.
 
-[IMAGE] 
+<img width="951" alt="Predictions" src="https://user-images.githubusercontent.com/90764641/171053277-407dd0fd-cbfc-45d3-8261-ebca5fd2c26d.png">
 
 ### Section "Currencies"
 In this section, the user can analyse the currencies market. The sidebar has updated fields to fill
@@ -43,14 +45,17 @@ specific for this asset. Here, the user can analyse the distribution of prices a
 analyse the real-time value and the prices of the last 7 days. Like "Cryptocurrencies", the user can 
 extract information the financial indicators. 
 
-[IMAGE]
+<img width="951" alt="Currencies_Prices" src="https://user-images.githubusercontent.com/90764641/171053299-12885fc8-0cea-4546-850d-cb48199b93cd.png">
+
+<img width="952" alt="Currencies_Prices_FI" src="https://user-images.githubusercontent.com/90764641/171053319-9ca73697-2514-458d-a65b-82d4d7a47c2b.png">
 
 ### Section "Other Assets"
 In "Other Assets", the user can find information about stocks. This page follows the same structure of the
 "Cryptocurrencies" page, adapted for stocks, in this case. 
 
+<img width="360" alt="stocks analysis_READme" src="https://user-images.githubusercontent.com/90764641/171053678-9103f2f3-2c1b-4080-8bc0-6706374ad5a9.png">
 
-[IMAGE]
+<img width="947" alt="Stock_Prices_FI" src="https://user-images.githubusercontent.com/90764641/171053579-967dfb27-6914-4ccf-9780-0b7b6252094a.png">
 
 ### Section "Exploratory Space"
 Until now, all of the spaces are more informative. Since we want to make sure that the users can extract 
@@ -58,7 +63,7 @@ the maximum information from our application, we decided to create an Explorator
 open space where the users can perform their personalized analyses. Here, there is a possibility of compare 
 assets, increasing the knowledge and improving their financial decisions. 
 
-[IMAGE]
+<img width="945" alt="Explore_Space" src="https://user-images.githubusercontent.com/90764641/171053438-851c4b0d-2317-41a1-ac21-6f2edcb3a073.png">
 
 # Sources: 
    *https://finance.yahoo.com/
