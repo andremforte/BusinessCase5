@@ -180,7 +180,7 @@ def indicators (df):
 
 		return df
 
-		def indicators_plot(data, categories, crypto, date1, date2):
+def indicators_plot(data, categories, crypto, date1, date2):
 		
 		df1= data.copy()
 
@@ -249,7 +249,7 @@ def indicators (df):
 		fig1=fig1.update_xaxes(showgrid=True, ticklabelmode="period")
 		st.plotly_chart(fig1, use_container_width=True)
 
-		def indicators_plot2(data, categories, crypto, date1, date2):
+def indicators_plot2(data, categories, crypto, date1, date2):
 
 		df1= data.copy()
 
@@ -296,7 +296,7 @@ def indicators (df):
 		st.plotly_chart(fig2, use_container_width=True)
 
 
-	def indicators_plot3(data, categories, crypto, date1, date2):
+def indicators_plot3(data, categories, crypto, date1, date2):
 
 		df1= data.copy()
 
@@ -349,7 +349,7 @@ def indicators (df):
 		st.plotly_chart(fig, use_container_width=True)
 
 
-	def graph2 (df, crypto, window):
+def graph2 (df, crypto, window):
 		data = df.copy()
 		data['MA' + str(window)] = data.Close.rolling(window = window).mean()
 
