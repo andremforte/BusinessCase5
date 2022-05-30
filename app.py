@@ -465,13 +465,13 @@ if options == 'Cryptocurrencies':
 		 
 	def definition2 (df, crypto, selection): 
 		st.markdown ("<h5 style='text-align: center; color: #000000;'>Table with prices and volume of the last 7 days (USD)</h5>", unsafe_allow_html=True)
-		df4 = round(df[[selection, 'Volume']],4).tail(7)
-		df4= pd.DataFrame(df4)
-
-		df4.reset_index(inplace = True)
-		df4['Date']= df4['Date'].dt.strftime("%d %B, %Y")
-		df4.set_index('Date', inplace = True)
-		st.dataframe(df4)
+		df4 = round(df[[selection, 'Volume']],4).tail(8)
+		df5 = df4.head(7)
+		df5= pd.DataFrame(df5)
+		df5.reset_index(inplace = True)
+		df5['Date']= df5['Date'].dt.strftime("%d %B, %Y")
+		df5.set_index('Date', inplace = True)
+		st.dataframe(df5)
 
 
 	with col2:
