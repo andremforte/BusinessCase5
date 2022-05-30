@@ -1,12 +1,10 @@
-[invest4some_financial_dashboard.pdf]
-
 # Invest4Some Financial Dashboard
 
 [PURPOSE OF THIS DASHBOARD - PARAGRAPH]
 
 ### You can have access to the dashboard through this link: (https://share.streamlit.io/andremforte/businesscase5/main/app.py)
 
-## * Main Structure: *
+##  Main Structure: 
 
 ### Section "Menu"
 
