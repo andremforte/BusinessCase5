@@ -19,7 +19,7 @@ you have the options to select the different chapters you want to analyse.
 <img width="952" alt="menu" src="https://user-images.githubusercontent.com/90764641/171053134-7db310fd-fb79-4df2-8402-1aad17489ca9.png">
 
 ### Section "Cryptocurrencies"
-After selection this chapter, you can see different elements in the sidebar. With them,
+After the selection of this chapter, you can see different elements in the sidebar. With them,
 you can filter your analysis. The page is divided into two subsections: Cryptocurrencies 
 Prices and Financial Indicators. The first subsection, it is possible to analyse the distribution
 of the type of the price and the volume of the selected cryptocurrency. Along with that, you can 
