@@ -21,7 +21,7 @@ you have the options to select the different chapters you want to analyse.
 ### Section "Cryptocurrencies"
 After the selection of this chapter, you can see different elements in the sidebar. With them,
 you can filter your analysis. The page is divided into two subsections: Cryptocurrencies 
-Prices and Financial Indicators. The first subsection, it is possible to analyse the distribution
+Prices and Financial Indicators. In the first subsection, it is possible to analyse the distribution
 of the type of the price and the volume of the selected cryptocurrency. Along with that, you can 
 see the real-time price and the change rate comparing to the last closing price. There is also a 
 table, so you can see the exact numbers of the last 7 days. In the second subsection, it is given 
