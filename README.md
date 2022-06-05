@@ -58,7 +58,7 @@ In "Other Assets", the user can find information about stocks. This page follows
 <img width="947" alt="Stock_Prices_FI" src="https://user-images.githubusercontent.com/90764641/171053579-967dfb27-6914-4ccf-9780-0b7b6252094a.png">
 
 ### Section "Exploratory Space"
-Until now, all of the spaces are more informative. Since we want to make sure that the users can extract 
+Until now, all of the spaces are essentially informative. Since we want to make sure that the users can extract 
 the maximum information from our application, we decided to create an Exploratory Space. This page is an 
 open space where the users can perform their personalized analyses. Here, there is a possibility of compare 
 assets, increasing the knowledge and improving their financial decisions. 
